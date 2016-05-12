@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>拖拽碰撞</title>
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/normalize/3.0.3/normalize.min.css">
+    <style type="text/css">
+        #drag-list {
+            position: relative;
+            width: 660px;
+            height: 660px;
+            margin: 0 auto;
+            padding: 0;
+        }
+        #drag-list li {
+            float: left;
+            z-index: 1;
+            width: 200px;
+            height: 200px;
+            margin: 10px;
+            list-style: none;
+        }
+        #drag-list .active {
+            border: 1px dashed black;
+        }
+    </style>
+</head>
+<body>
+    <ul id="drag-list">
+        <li><img src="./6.jpg" alt="6" /></li>
+        <li><img src="./4.jpg" alt="4" /></li>
+        <li><img src="./3.jpg" alt="3" /></li>
+        <li><img src="./9.jpg" alt="9" /></li>
+        <li><img src="./8.jpg" alt="8" /></li>
+        <li><img src="./1.jpg" alt="1" /></li>
+        <li><img src="./7.jpg" alt="7" /></li>
+        <li><img src="./5.jpg" alt="5" /></li>
+        <li><img src="./2.jpg" alt="2" /></li>
+    </ul>
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        (function($) {
+            var dragList = document.getElementById('drag-list');
+            var dragItem = dragList.getElementsByTagName('li');
+            var dragWidth = 200;
+            var dragLen = dragItem.length;
+            var dragPos = [];
+            var dragZindex = 2;
+            var i = 0;
+
+            // 存储li初始位置的坐标
+            for (i = 0; i < dragLen; i++) {
+                dragPos[i]={
+                    left: dragItem[i].offsetLeft,
+                    top: dragItem[i].offsetTop
+                };
+            }
+
+            // 将li的布局转换为绝对定位
+            for (i = 0; i < dragLen; i++) {
+                dragItem[i].style.position = 'absolute';
+                dragItem[i].style.left = dragPos[i].left+'px';
+                dragItem[i].style.top = dragPos[i].top+'px';
+                dragItem[i].style.margin = 0;
+                dragItem[i].index = i;
+            }
+
+            // 绑定拖拽事件
+            for (i = 0; i < dragLen; i++) {
+                setDrag(dragItem[i]);
+            }
+
+            function setDrag(item) {
+                item.onmousedown = function(ev) {
+                    var oEvent = ev||event;
+                    // 使拖拽物体显示在最上方
+                    item.style.zIndex = dragZindex++;
+                    // 物体相对距离
+                    var disX = oEvent.clientX - item.offsetLeft;
+                    var disY = oEvent.clientY - item.offsetTop;
+                    // 鼠标移动时
+                    document.onmousemove = function(ev) {
+                        var oEvent = ev||event;
+                        // 设置新位置
+                        item.style.left = oEvent.clientX - disX + 'px';
+                        item.style.top = oEvent.clientY - disY + 'px';
+
+                        for (i = 0; i < dragLen; i++) {
+                            dragItem[i].className = '';
+                        }
+                        // 寻找距离最近的碰撞物体
+                        var nearestItem = findNearest(item);
+                        if (nearestItem) {
+                            nearestItem.className = 'active';
+                        }
+                    };
+                    // 鼠标松开时
+                    document.onmouseup = function() {
+                        // 解除事件绑定
+                        document.onmousemove = null;
+                        document.onmouseup = null;
+                        var nearestItem = findNearest(item);
+                        // 碰到物体时
+                        if (nearestItem) {
+                            nearestItem.className = '';
+                            nearestItem.style.zIndex = dragZindex++;
+                            item.style.zIndex = dragZindex++;
+                            // 被碰物体移动到拖拽物体位置上
+                            startMove(nearestItem, dragPos[item.index]);
+                            // 拖拽物体移动到被碰物体位置上
+                            startMove(item, dragPos[nearestItem.index]);
+                            // 交换索引值
+                            var tmp = 0;
+                            tmp = item.index;
+                            item.index = nearestItem.index;
+                            nearestItem.index = tmp;
+                        } else {
+                            // 没有碰撞时恢复到原来的位置
+                            startMove(item, dragPos[item.index]);
+                        }
+                    };
+                    // 终止事件
+                    return false;
+                };
+            }
+
+            // 碰撞检测
+            function collideTest(item1, item2) {
+                // 取上下左右四个边线位置
+                var l1 = item1.offsetLeft;
+                var r1 = item1.offsetLeft+dragWidth;
+                var t1 = item1.offsetTop;
+                var b1 = item1.offsetTop+dragWidth;
+
+                var l2 = item2.offsetLeft;
+                var r2 = item2.offsetLeft+dragWidth;
+                var t2 = item2.offsetTop;
+                var b2 = item2.offsetTop+dragWidth;
+                // 上下左右的碰撞情况，有一边接触就算碰到
+                if (r1<l2 || l1>r2 || b1<t2 || t1>b2) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+
+            // 计算物体距离
+            function getDis(item1, item2) {
+                var x = item1.offsetLeft - item2.offsetLeft;
+                var y = item1.offsetTop - item2.offsetTop;
+                return Math.sqrt(x*x + y*y);
+            }
+
+            // 寻找最近碰到的物体
+            function findNearest(item) {
+                // 预定义最大值 比较中小于的就赋值给它 直到求得最小值
+                var minDis = 9999999;
+                var minDisIndex = -1;
+
+                for (i = 0; i < dragItem.length; i++) {
+                    if (item === dragItem[i]) continue;
+                    // 碰撞检测
+                    if (collideTest(item, dragItem[i])) {
+                        // 求出距离
+                        var dis = getDis(item, dragItem[i]);
+                        // 把最小值赋给minDis，并记录位置
+                        if (minDis>dis) {
+                            minDis = dis;
+                            minDisIndex=i;
+                        }
+                    }
+                }
+                // 没有碰撞
+                if (minDisIndex === -1) {
+                    return null;
+                } else {
+                    // 返回最近的物体
+                    return dragItem[minDisIndex];
+                }
+            }
+
+            // 改变位置
+            function startMove(item, pos) {
+                $(item).animate({
+                    left: '' + pos.left,
+                    top: '' + pos.top
+                }, 500);
+            }
+        })(jQuery);
+    </script>
+</body>
+</html>

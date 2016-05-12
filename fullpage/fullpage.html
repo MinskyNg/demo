@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>全屏滚动</title>
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/normalize/3.0.3/normalize.min.css">
+    <style type="text/css">
+        #wrap {
+            overflow: hidden;
+            width: 100%;
+        }
+
+        #main {
+            position: relative;
+        }
+
+        .content {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .page1 {
+            background-color: #C0FF3E;
+        }
+
+        .page2 {
+            background-color: #AEEEEE;
+        }
+
+        .page3 {
+            background-color: #EEEE00;
+        }
+
+        .page4 {
+            background-color: #FF6347;
+        }
+
+        .page5 {
+            background-color: #D15FEE;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <div id="main" style="top: 0;">
+            <div class="content page1">
+            </div>
+            <div class="content page2">
+            </div>
+            <div class="content page3">
+            </div>
+            <div class="content page4">
+            </div>
+            <div class="content page5">
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        (function($) {
+            var pageHeight = window.innerHeight;
+            var wrap = document.getElementById('wrap');
+            wrap.style.height = pageHeight + 'px';
+            var $content = $('.content');
+            $content.height(pageHeight);
+            var scrollTime = 800;
+            var scrolled = false;
+
+            // firefox浏览器事件名与其他浏览器不同
+            if ((navigator.userAgent.toLowerCase().indexOf('firefox') !== -1)) {
+                document.addEventListener('DOMMouseScroll', handlescroll, false);
+            } else if (document.addEventListener) {
+                document.addEventListener('mousewheel', handlescroll, false);
+            } else if (document.attachEvent) {
+                document.attachEvent('onmousewheel', handlescroll);
+            } else {
+                document.onmousewheel = handlescroll;
+            }
+
+            // 滚动事件处理函数
+            function handlescroll(ev) {
+                var oEvent = ev || event;
+                if (scrolled === false) {
+                    // firefox中方向判断与其他浏览器相反
+                    var delta = oEvent.detail || (-oEvent.wheelDelta);
+                    scrolled = true;
+                    // 向下翻页并防止超过最后一屏
+                    if (delta > 0 && parseInt(main.style.top) > -pageHeight * ( $content.length - 1)) {
+                        $('#main').animate({top: '-=' + pageHeight}, scrollTime, function() {
+                            scrolled = false;
+                        });// 向上翻页并防止超过最上一屏
+                    } else if (delta < 0 && parseInt(main.style.top) < 0) {
+                        $('#main').animate({top: '+=' + pageHeight}, scrollTime, function() {
+                            scrolled = false;
+                        });
+                    } else {
+                        scrolled = false;
+                    }
+                }
+            }
+        })(jQuery);
+    </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>放大镜</title>
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/normalize/3.0.3/normalize.min.css">
+    <style type="text/css">
+        *{
+            box-sizing: border-box;
+        }
+
+        #magnifier {
+            position:relative;
+            width: 320px;
+            height: 200px;
+            margin: 20px auto 0;
+        }
+
+        #magnifier img {
+            display: block;
+            width: 320px;
+            height: 200px;
+        }
+
+        #darg {
+            display: none;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.8);
+            cursor: move;
+        }
+
+        #imgShow {
+            display: none;
+            width: 400px;
+            height: 400px;
+            margin: 20px auto 0;
+            overflow: hidden;
+        }
+
+        #imgShow img {
+            width: 1280px;
+            height: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div id="magnifier">
+        <img id="smallImg" src="./magnifier.jpg"/>
+        <div id="darg"></div>
+    </div>
+    <div id="imgShow" class="all"><img id="rawImg" src="magnifier.jpg"/></div>
+    <script type="text/javascript">
+        (function() {
+            var magnifier = document.getElementById('magnifier');
+            var smallImg = document.getElementById('smallImg');
+            var darg = document.getElementById('darg');
+            var imgShow = document.getElementById('imgShow');
+            var rawImg = document.getElementById('rawImg');
+
+            // 当鼠标在magnifier上面移动的事件
+            magnifier.onmousemove = function(ev) {
+                var oEvent = ev || event;
+                // 拖拽框显示
+                darg.style.display = 'block';
+                // 放大镜显示
+                imgShow.style.display = 'block';
+                // magnifier内部拖拽框距离magnifier左侧 顶部距离
+                var leftDis = oEvent.clientX - magnifier.offsetLeft - darg.offsetWidth / 2;
+                var topDis = oEvent.clientY - magnifier.offsetTop - darg.offsetHeight / 2;
+                // magnifier内部x y方向可移动最大距离
+                var maxmoveX = magnifier.clientWidth - darg.offsetWidth;
+                var maxmoveY = magnifier.clientHeight - darg.offsetHeight;
+                // 防止拖拽框溢出magnifier右 下 左 上侧
+                if (leftDis > maxmoveX) {
+                    leftDis = maxmoveX;
+                }
+                if (topDis > maxmoveY) {
+                    topDis = maxmoveY;
+                }
+                if(leftDis < 0){
+                    leftDis = 0;
+                }
+                if(topDis < 0){
+                    topDis = 0;
+                }
+                // 确定拖拽框位置
+                darg.style.left = leftDis + 'px';
+                darg.style.top = topDis + 'px';
+                // 求得要放大的倍数
+                var scale = rawImg.offsetWidth / smallImg.offsetWidth;
+                // 移动imgShow隐藏滚动条(overflow: scroll可见效果) 显示放大区域
+                imgShow.scrollLeft = darg.offsetLeft * scale;
+                imgShow.scrollTop = darg.offsetTop * scale;
+            }
+
+            magnifier.onmouseout = function() {
+                // 鼠标移出时隐藏拖拽框和放大镜
+                darg.style.display = 'none';
+                imgShow.style.display = 'none';
+            }
+        })();
+    </script>
+</body>
+</html>

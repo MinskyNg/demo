@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>dock任务栏</title>
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/normalize/3.0.3/normalize.min.css">
+    <style type="text/css">
+        #show-scale {
+            margin-top: 200px;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        #dock-bar {
+            width: 100%;
+            position: absolute;
+            bottom: 5px;
+            text-align: center;
+            background: url(./dockbar.jpg) no-repeat 50% 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="show-scale">
+        <p>缩放比例如下：</p>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    <div id="dock-bar">
+        <img src="./1.png" alt="1"/>
+        <img src="./2.png" alt="2"/>
+        <img src="./3.png" alt="3"/>
+        <img src="./4.png" alt="4"/>
+        <img src="./5.png" alt="5"/>
+        <img src="./6.png" alt="6"/>
+    </div>
+    <script type="text/javascript">
+        (function() {
+            var dockBar = document.getElementById('dock-bar');
+            var dockImg = document.getElementsByTagName('img');
+            var dockText = document.getElementsByTagName('span');
+            // 监听鼠标移动事件
+            document.onmousemove = function (ev) {
+                var oEvent = ev||event;
+                var i = 0;
+
+                // 对所有图标进行相应缩放
+                for (i = 0; i < dockImg.length; i++) {
+                    // 得到图标中心点坐标
+                    var cenLeft = dockImg[i].offsetLeft + dockBar.offsetLeft + dockImg[i].offsetWidth / 2;
+                    var cenTop = dockImg[i].offsetTop + dockBar.offsetTop + dockImg[i].offsetHeight / 2;
+
+                    // 图标距离左侧 顶部的中心点坐标减去鼠标距离页面左侧的坐标
+                    var a = cenLeft - oEvent.clientX;
+                    var b = cenTop - oEvent.clientY;
+                    // 图标中心与鼠标距离
+                    var dis = Math.sqrt(a*a+b*b);
+
+                    // 缩放比例 距离越近放大越大
+                    var scale = 1 - dis / 300;
+                    // 防止过度缩小
+                    if (scale<0.5) {
+                        scale = 0.5;
+                    }
+                    // 缩放并显示比例
+                    dockImg[i].width = scale * 200;
+                    dockText[i].innerText = scale.toFixed(3);
+                }
+            }
+        })();
+    </script>
+</body>
+</html>

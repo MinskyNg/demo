@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>图片轮播</title>
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/normalize/3.0.3/normalize.min.css">
+    <style type="text/css">
+        * {
+            box-sizing: border-box;
+        }
+
+        #slide-container {
+            position: relative;
+            width: 520px;
+            height: 280px;
+            margin: 80px auto 0;
+            overflow: hidden;
+        }
+
+        #slide-list {
+            z-index: -1;
+            position: absolute;
+            height: 280px;
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        #slide-list li {
+            float: left;
+        }
+
+        #slide-left {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 35px;
+            height: 30px;
+            border: 0;
+            background-color: rgba(200, 200, 200, 0.9);
+        }
+
+        #slide-left:hover {
+            background-color: rgba(100, 100, 100, 0.9);
+        }
+
+        #slide-right {
+            display: none;
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 35px;
+            height: 30px;
+            border: 0;
+            background-color: rgba(200, 200, 200, 0.9);
+        }
+
+        #slide-right:hover {
+            background-color: rgba(100, 100, 100, 0.9);
+        }
+
+        #slide-index {
+            position: absolute;
+            bottom: 10px;
+            left: center;
+            width:100%;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        #slide-index li{
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+            border-radius: 50%;
+            background-color: rgba(200, 200, 200, 0.9);
+            cursor: pointer;
+        }
+
+        #slide-index #slide-active {
+            background-color: rgba(100, 100, 100, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <div id="slide-container">
+        <button id="slide-left">←</button>
+        <button id="slide-right">→</button>
+        <ul id="slide-list" style="left: -520px;">
+            <li><img src="./5.jpg" alt="5"></li>
+            <li><img src="./1.jpg" alt="1"></li>
+            <li><img src="./2.jpg" alt="2"></li>
+            <li><img src="./3.jpg" alt="3"></li>
+            <li><img src="./4.jpg" alt="4"></li>
+            <li><img src="./5.jpg" alt="5"></li>
+            <li><img src="./1.jpg" alt="1"></li>
+        </ul>
+        <ul id="slide-index">
+            <li id="slide-active"></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        (function($) {
+            var stopTime = 2000;
+            var slideTime = 1000;
+            var $slideList = $('#slide-list');
+            var slided = false;
+            var slideIndex = 0;
+            var slideLength = $('#slide-list li').length - 2;
+            $('#slide-list').width($('#slide-list li').length * 520);
+
+            // 为下标添加索引
+            for (var i = 0; i < slideLength; i++) {
+               $('#slide-index li').eq(i).data('index', i);
+            }
+
+            // 默认播放下一张 根据 offset 的不同有所差别
+            function slideNext(offset) {
+                var slideOffset = (offset * -520) || -520;
+                if (slided === false) {
+                    slided = true;
+                    $('#slide-active').removeAttr('id');
+                    $('#slide-index li').eq((slideIndex = slideIndex + (offset || 1) ) % slideLength).attr('id', 'slide-active');
+                    $slideList.animate({
+                        left: '+=' + slideOffset
+                    }, slideTime, function() {
+                        if (parseInt($slideList.css('left')) < (-520 * slideLength)) {
+                            $slideList.css('left', -520);
+                        }
+                        if (parseInt($slideList.css('left')) > -520) {
+                            $slideList.css('left', -520 * slideLength);
+                        }
+                        slided = false;
+                    });
+                }
+            }
+            // 循环播放
+            var slideInterval = setInterval(slideNext, stopTime);
+
+            // 当鼠标移入时停止播放并显示箭头
+            $('#slide-container').mouseover(function() {
+                clearInterval(slideInterval);
+                $('#slide-left').css({ display: 'block' });
+                $('#slide-right').css({ display: 'block' });
+            });
+            // 当鼠标移开时重新播放并隐藏箭头
+            $('#slide-container').mouseout(function() {
+                slideInterval = setInterval(slideNext, stopTime);
+                $('#slide-left').css({ display: 'none' });
+                $('#slide-right').css({ display: 'none' });
+            });
+            // 当点击下标时，滚动到相应位置
+            $('#slide-container').click(function(ev) {
+                var oEvent = ev || event;
+                var $target = $(oEvent.target);
+                if ($target.is('#slide-left')) {
+                    slideNext(-1);
+                }
+                if ($target.is('#slide-right')) {
+                    slideNext();
+                }
+                if ($target.is('#slide-index li') && !$target.is('#slide-active')) {
+                    var offset = $target.data('index') - $('#slide-active').data('index');
+                    slideNext(offset);
+                }
+            })
+        })(jQuery);
+    </script>
+</body>
+</html>
