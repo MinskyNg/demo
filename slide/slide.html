@@ -162,7 +162,7 @@
             // 当点击下标时，滚动到相应位置
             $('#slide-container').click(function(ev) {
                 var oEvent = ev || event;
-                var $target = $(oEvent.target);
+                var $target = $(oEvent.target || oEvent.srcElement);
                 if ($target.is('#slide-left')) {
                     slideNext(-1);
                 }

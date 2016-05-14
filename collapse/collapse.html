@@ -100,7 +100,7 @@
             // 为菜单注册点击事件委托
             $collapseMenu.click(function(ev) {
                 var oEvent = ev || event;
-                var $target = $(oEvent.target);
+                var $target = $(oEvent.target || oEvent.srcElement);
                 if ($target.is('.collapse-title')) {
                     // 如果相邻列表不可见
                     if ($target.next().is(':visible') === false) {

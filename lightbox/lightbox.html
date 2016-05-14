@@ -82,7 +82,7 @@
             var $bigImg = $('#lightbox img');
             // 为图片注册点击事件
             $('#img-wrapper').click(function(ev) {
-                var $smallImg = $(ev.target || event.target);
+                var $smallImg = $(ev.target || event.srcElement);
                 if ($smallImg.is('img')) {
                     $bigImg.attr('src', $smallImg.attr('src'));
                     $('#lightbox img').css({'top': '50%', 'left': '50%', 'width': $smallImg.width * scale,
@@ -90,7 +90,7 @@
                     $('#lightbox').fadeIn('fast');
                     // 为灯箱注册点击事件
                     $('#lightbox').click(function(ev) {
-                        var $target = $(ev.target || event.target);
+                        var $target = $(ev.target || event.srcElement);
                         // 显示前一张图
                         if ($target.is('#prev')) {
                             if (!$smallImg.is('#img-wrapper img:first-child')) {

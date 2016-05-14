@@ -61,13 +61,14 @@
             // 为选项卡添加点击事件
             tab.onclick = function (ev) {
                 var oEvent = ev || event;
-                if (oEvent.target.nodeName.toLowerCase().indexOf('button') !== -1 ) {
+                var target = oEvent.target || oEvent.srcElement;
+                if (target.nodeName.toLowerCase().indexOf('button') !== -1 ) {
                     for ( i = 0; i < tabBtn.length; i++) {
                         tabBtn[i].className = '';
                         tabContent[i].style.display = 'none';
                    }
-                   oEvent.target.className = 'active';
-                   tabContent[oEvent.target.index].style.display = 'block';
+                   target.className = 'active';
+                   tabContent[target.index].style.display = 'block';
                 }
             }
         })();
