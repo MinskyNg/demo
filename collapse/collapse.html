@@ -96,26 +96,51 @@
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.2/jquery.min.js"></script>
     <script>
         (function($) {
-            var $collapseMenu = $('#collapse-menu');
-            // 为菜单注册点击事件委托
-            $collapseMenu.click(function(ev) {
-                var oEvent = ev || event;
-                var $target = $(oEvent.target || oEvent.srcElement);
-                if ($target.is('.collapse-title')) {
+            function Collapse($tar, opts) {
+                this.$tar = $tar;
+                this.btnSel = opts.btnSel;
+                this.conSel = opts.conSel;
+                this.aniTime = opts.aniTime;
+                this.init();
+            }
+
+            Collapse.prototype = {
+                // 初始化
+                init: function() {
+                    this.$tar.on('click', this.btnSel, this._handleClick.bind(this));
+                },
+
+                _handleClick: function(event) {
+                    var $target = $(event.target);
+                    var show = false;
                     // 如果相邻列表不可见
                     if ($target.next().is(':visible') === false) {
-                        $('#collapse-menu ul').slideUp(300);
+                        show = true;
+                        this.$tar.find(this.conSel).slideUp(this.aniTime);
                     }
-                    $target.next().slideToggle(300);
-                    if ($target.is('#collapse-menu li:last-child div')) {
-                        $target.css('border-bottom-left-radius', '0');
-                        $target.css('border-bottom-right-radius', '0');
+                    $target.next().slideToggle(this.aniTime);
+                    // 事件广播
+                    if (show) {
+                        this.$tar.trigger('collapse.show', event.tatget);
                     } else {
-                        $('#collapse-menu li:last-child div').css('border-bottom-left-radius', '5px');
-                        $('#collapse-menu li:last-child div').css('border-bottom-right-radius', '5px');
+                        this.$tar.trigger('collapse.close', event.tatget);
                     }
                 }
-            });
+            };
+
+            $.fn.collapse = function(options) {
+                var defaults = {
+                    btnSel: '.collapse-title',
+                    conSel: 'ul',
+                    aniTime: 300,
+                };
+                new Collapse(this, $.extend({}, defaults, options));
+                return this;
+            };
+
+            $('#collapse-menu').collapse()
+                .on('collapse.show', function() {console.log('show');})
+                .on('collapse.close', function() {console.log('close');});
         })(jQuery);
     </script>
 </body>

@@ -7,166 +7,165 @@
     <title>纯CSS3时间轴</title>
     <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/normalize/3.0.3/normalize.min.css">
     <style type="text/css">
-body {
-  background: #000 url(./bourne.jpg) no-repeat fixed center; }
+      body {
+        background: #000 url(./bourne.jpg) no-repeat fixed center; }
 
-/* 时间轴线 */
-.timeline {
-  position: relative;
-  width: 6px;
-  height: 500px;
-  margin: 50px auto 0;
-  border-radius: 3px;
-  background: #333;
-  -webkit-animation: lineSlide 2s linear 0.5s;
-  animation: lineSlide 2s linear 0.5s; }
+      /* 时间轴线 */
+      .timeline {
+        position: relative;
+        width: 6px;
+        height: 500px;
+        margin: 50px auto 0;
+        border-radius: 3px;
+        background: #333;
+        -webkit-animation: lineSlide 2s linear 0.5s;
+        animation: lineSlide 2s linear 0.5s; }
 
-/* 时间轴下落动画 */
-@-webkit-keyframes lineSlide {
-  0% {
-    height: 0; }
-  100% {
-    height: 500px; } }
-@keyframes lineSlide {
-  0% {
-    height: 0; }
-  100% {
-    height: 500px; } }
+      /* 时间轴下落动画 */
+      @-webkit-keyframes lineSlide {
+        0% {
+          height: 0; }
+        100% {
+          height: 500px; } }
+      @keyframes lineSlide {
+        0% {
+          height: 0; }
+        100% {
+          height: 500px; } }
 
-/* 淡入动画 */
-@-webkit-keyframes showIn {
-  0%, 70% {
-    opacity: 0; }
-  100% {
-    opacity: 1; } }
-@keyframes showIn {
-  0%, 70% {
-    opacity: 0; }
-  100% {
-    opacity: 1; } }
+      /* 淡入动画 */
+      @-webkit-keyframes showIn {
+        0%, 70% {
+          opacity: 0; }
+        100% {
+          opacity: 1; } }
+      @keyframes showIn {
+        0%, 70% {
+          opacity: 0; }
+        100% {
+          opacity: 1; } }
 
-/* 轴心 */
-.timeline .time-right, .timeline .time-left {
-  position: absolute;
-  left: -10px;
-  top: -10px;
-  width: 20px;
-  height: 20px;
-  border: 4px solid rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  background: #333;
-  transition: all 0.5s;
-  -webkit-animation: showIn ease;
-  animation: showIn ease; }
+      /* 轴心 */
+      .timeline .time-right, .timeline .time-left {
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        width: 20px;
+        height: 20px;
+        border: 4px solid rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        background: #333;
+        transition: all 0.5s;
+        -webkit-animation: showIn ease;
+        animation: showIn ease; }
 
-/* 轴心依次出现 */
-.timeline .time-right:nth-child(1) {
-  -webkit-animation-duration: 0s;
-  animation-duration: 0s; }
+      /* 轴心依次出现 */
+      .timeline .time-right:nth-child(1) {
+        -webkit-animation-duration: 0s;
+        animation-duration: 0s; }
 
-.timeline .time-left:nth-child(2) {
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s; }
+      .timeline .time-left:nth-child(2) {
+        -webkit-animation-duration: 1s;
+        animation-duration: 1s; }
 
-.timeline .time-right:nth-child(3) {
-  -webkit-animation-duration: 1.5s;
-  animation-duration: 1.5s; }
+      .timeline .time-right:nth-child(3) {
+        -webkit-animation-duration: 1.5s;
+        animation-duration: 1.5s; }
 
-.timeline .time-left:nth-child(4) {
-  -webkit-animation-duration: 2s;
-  animation-duration: 2s; }
+      .timeline .time-left:nth-child(4) {
+        -webkit-animation-duration: 2s;
+        animation-duration: 2s; }
 
-/* 轴心鼠标悬浮变化 */
-.timeline .time-right:hover, .timeline .time-left:hover {
-  border: 4px solid #333;
-  background: #fff;
-  box-shadow: 0 0 2px 2px rgba(255, 255, 255, 0.4); }
+      /* 轴心鼠标悬浮变化 */
+      .timeline .time-right:hover, .timeline .time-left:hover {
+        border: 4px solid #333;
+        background: #fff;
+        box-shadow: 0 0 2px 2px rgba(255, 255, 255, 0.4); }
 
-/* 日期 */
-.timeline .time-right p, .timeline .time-left p {
-  position: absolute;
-  left: -120px;
-  top: -15px;
-  width: 100px;
-  font-size: 1em;
-  color: #eee;
-  -webkit-animation: showIn 3s ease;
-  animation: showIn 3s ease; }
+      /* 日期 */
+      .timeline .time-right p, .timeline .time-left p {
+        position: absolute;
+        left: -120px;
+        top: -15px;
+        width: 100px;
+        font-size: 1em;
+        color: #eee;
+        -webkit-animation: showIn 3s ease;
+        animation: showIn 3s ease; }
 
-.timeline .time-left p {
-  left: 60px; }
+      .timeline .time-left p {
+        left: 60px; }
 
-/* 内容区 */
-.timeline .time-right div, .timeline .time-left div {
-  position: absolute;
-  top: 50%;
-  left: 50px;
-  width: 300px;
-  height: 50px;
-  margin-top: -25px;
-  border: 3px solid #eee;
-  border-radius: 10px;
-  background: #333;
-  z-index: 2;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.5s;
-  -webkit-animation: showIn 3s ease;
-  animation: showIn 3s ease; }
+      /* 内容区 */
+      .timeline .time-right div, .timeline .time-left div {
+        position: absolute;
+        top: 50%;
+        left: 50px;
+        width: 300px;
+        height: 50px;
+        margin-top: -25px;
+        border: 3px solid #eee;
+        border-radius: 10px;
+        background: #333;
+        z-index: 2;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.5s;
+        -webkit-animation: showIn 3s ease;
+        animation: showIn 3s ease; }
 
-.timeline .time-left div {
-  left: -335px; }
+      .timeline .time-left div {
+        left: -335px; }
 
-/* 内容区hover变化 */
-.timeline .time-right div:hover, .timeline .time-left div:hover {
-  height: 180px; }
+      /* 内容区hover变化 */
+      .timeline .time-right div:hover, .timeline .time-left div:hover {
+        height: 180px; }
 
-/* 内容标题 */
-.timeline .time-right div h3, .timeline .time-left div h3 {
-  color: #fff;
-  text-align: center; }
+      /* 内容标题 */
+      .timeline .time-right div h3, .timeline .time-left div h3 {
+        color: #fff;
+        text-align: center; }
 
-/* 三角形 */
-.timeline .time-right:before, .timeline .time-left:before {
-  content: '';
-  position: absolute;
-  top: 0px;
-  left: 30px;
-  width: 0px;
-  height: 0px;
-  border: 10px solid transparent;
-  border-right: 10px solid #eee;
-  z-index: -1;
-  -webkit-animation: showIn 3s ease;
-  animation: showIn 3s ease; }
+      /* 三角形 */
+      .timeline .time-right:before, .timeline .time-left:before {
+        content: '';
+        position: absolute;
+        top: 0px;
+        left: 30px;
+        width: 0px;
+        height: 0px;
+        border: 10px solid transparent;
+        border-right: 10px solid #eee;
+        z-index: -1;
+        -webkit-animation: showIn 3s ease;
+        animation: showIn 3s ease; }
 
-.timeline .time-left:before {
-  left: -30px;
-  border: 10px solid transparent;
-  border-left: 10px solid #eee; }
+      .timeline .time-left:before {
+        left: -30px;
+        border: 10px solid transparent;
+        border-left: 10px solid #eee; }
 
-/* 内容正文 */
-.timeline .time-right div p, .timeline .time-left div p {
-  position: static;
-  width: 300px;
-  padding: 5px;
-  border-top: 2px solid #eee;
-  color: #fff;
-  font-size: 1em; }
+      /* 内容正文 */
+      .timeline .time-right div p, .timeline .time-left div p {
+        position: static;
+        width: 300px;
+        padding: 5px;
+        border-top: 2px solid #eee;
+        color: #fff;
+        font-size: 1em; }
 
-/* 尾部 */
-.timeline:after {
-  content: '7月29日伯恩归来';
-  position: absolute;
-  bottom: -30px;
-  width: 200px;
-  margin-left: -100px;
-  color: #fff;
-  font-size: 1.3em;
-  text-align: center;
-  -webkit-animation: showIn 4s ease;
-  animation: showIn 4s ease; }
-
+      /* 尾部 */
+      .timeline:after {
+        content: '7月29日伯恩归来';
+        position: absolute;
+        bottom: -30px;
+        width: 200px;
+        margin-left: -100px;
+        color: #fff;
+        font-size: 1.3em;
+        text-align: center;
+        -webkit-animation: showIn 4s ease;
+        animation: showIn 4s ease; }
     </style>
 </head>
 <body>

@@ -12,7 +12,7 @@
         }
 
         #magnifier {
-            position:relative;
+            position: relative;
             width: 320px;
             height: 200px;
             margin: 20px auto 0;
@@ -24,7 +24,7 @@
             height: 200px;
         }
 
-        #darg {
+        #drag {
             display: none;
             position: absolute;
             left: 0px;
@@ -35,7 +35,7 @@
             cursor: move;
         }
 
-        #imgShow {
+        #img-wrap {
             display: none;
             width: 400px;
             height: 400px;
@@ -43,7 +43,7 @@
             overflow: hidden;
         }
 
-        #imgShow img {
+        #img-wrap img {
             width: 1280px;
             height: 800px;
         }
@@ -51,59 +51,85 @@
 </head>
 <body>
     <div id="magnifier">
-        <img id="smallImg" src="./magnifier.jpg"/>
-        <div id="darg"></div>
+        <img id="small-img" src="./magnifier.jpg"/>
+        <div id="drag"></div>
     </div>
-    <div id="imgShow" class="all"><img id="rawImg" src="magnifier.jpg"/></div>
+    <div id="img-wrap" class="all"><img id="big-img" src="magnifier.jpg"/></div>
     <script type="text/javascript">
         (function() {
-            var magnifier = document.getElementById('magnifier');
-            var smallImg = document.getElementById('smallImg');
-            var darg = document.getElementById('darg');
-            var imgShow = document.getElementById('imgShow');
-            var rawImg = document.getElementById('rawImg');
-
-            // 当鼠标在magnifier上面移动的事件
-            magnifier.onmousemove = function(ev) {
-                var oEvent = ev || event;
-                // 拖拽框显示
-                darg.style.display = 'block';
-                // 放大镜显示
-                imgShow.style.display = 'block';
-                // magnifier内部拖拽框距离magnifier左侧 顶部距离
-                var leftDis = oEvent.clientX - magnifier.offsetLeft - darg.offsetWidth / 2;
-                var topDis = oEvent.clientY - magnifier.offsetTop - darg.offsetHeight / 2;
-                // magnifier内部x y方向可移动最大距离
-                var maxmoveX = magnifier.clientWidth - darg.offsetWidth;
-                var maxmoveY = magnifier.clientHeight - darg.offsetHeight;
-                // 防止拖拽框溢出magnifier右 下 左 上侧
-                if (leftDis > maxmoveX) {
-                    leftDis = maxmoveX;
-                }
-                if (topDis > maxmoveY) {
-                    topDis = maxmoveY;
-                }
-                if(leftDis < 0){
-                    leftDis = 0;
-                }
-                if(topDis < 0){
-                    topDis = 0;
-                }
-                // 确定拖拽框位置
-                darg.style.left = leftDis + 'px';
-                darg.style.top = topDis + 'px';
-                // 求得要放大的倍数
-                var scale = rawImg.offsetWidth / smallImg.offsetWidth;
-                // 移动imgShow隐藏滚动条(overflow: scroll可见效果) 显示放大区域
-                imgShow.scrollLeft = darg.offsetLeft * scale;
-                imgShow.scrollTop = darg.offsetTop * scale;
+            function Magnifier(opts) {
+                this.magnifier = document.getElementById(opts.magnifierId);
+                this.smallImg = document.getElementById(opts.smallId);
+                this.drag = document.getElementById(opts.dragId);
+                this.imgWrap = document.getElementById(opts.wrapId);
+                this.bigImg = document.getElementById(opts.bigId);
+                this.init();
             }
 
-            magnifier.onmouseout = function() {
-                // 鼠标移出时隐藏拖拽框和放大镜
-                darg.style.display = 'none';
-                imgShow.style.display = 'none';
-            }
+            Magnifier.prototype = {
+                init: function() {
+                    this.magnifier.onmousemove = this._handleMousemove.bind(this);
+                    this.magnifier.onmouseout = this._handleMouseout.bind(this);
+                },
+
+                // 当鼠标在magnifier上面移动的事件
+                _handleMousemove: function(ev) {
+                    var oEvent = ev || event;
+                    // 拖拽框显示
+                    this.drag.style.display = 'block';
+                    // 放大镜显示
+                    this.imgWrap.style.display = 'block';
+                    // magnifier内部拖拽框距离magnifier左侧 顶部距离
+                    var leftDis = oEvent.clientX - this.magnifier.offsetLeft - this.drag.offsetWidth / 2;
+                    var topDis = oEvent.clientY - this.magnifier.offsetTop - this.drag.offsetHeight / 2;
+                    // magnifier内部x y方向可移动最大距离
+                    var maxmoveX = this.magnifier.clientWidth - this.drag.offsetWidth;
+                    var maxmoveY = this.magnifier.clientHeight - this.drag.offsetHeight;
+                    // 防止拖拽框溢出this.magnifier右 下 左 上侧
+                    if (leftDis > maxmoveX) {
+                        leftDis = maxmoveX;
+                    }
+                    if (topDis > maxmoveY) {
+                        topDis = maxmoveY;
+                    }
+                    if(leftDis < 0){
+                        leftDis = 0;
+                    }
+                    if(topDis < 0){
+                        topDis = 0;
+                    }
+                    // 确定拖拽框位置
+                    this.drag.style.left = leftDis + 'px';
+                    this.drag.style.top = topDis + 'px';
+                    // 求得要放大的倍数
+                    var scale = this.bigImg.offsetWidth / this.smallImg.offsetWidth;
+                    // 移动imgWrap隐藏滚动条(overflow: scroll可见效果) 显示放大区域
+                    this.imgWrap.scrollLeft = this.drag.offsetLeft * scale;
+                    this.imgWrap.scrollTop = this.drag.offsetTop * scale;
+                },
+
+                _handleMouseout: function() {
+                    // 鼠标移出时隐藏拖拽框和放大镜
+                    this.drag.style.display = 'none';
+                    this.imgWrap.style.display = 'none';
+                },
+
+                destroy: function() {
+                    this.magnifier.onmousemove = null;
+                    this.magnifier.onmouseout = null;
+                }
+            };
+
+            options = {
+                magnifierId: 'magnifier',
+                smallId: 'small-img',
+                dragId: 'drag',
+                wrapId: 'img-wrap',
+                bigId: 'big-img'
+            };
+
+            var magnifier = new Magnifier(options);
+            // magnifier.destroy();
         })();
     </script>
 </body>

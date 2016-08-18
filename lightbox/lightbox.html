@@ -7,12 +7,12 @@
     <title>图片画廊</title>
     <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/normalize/3.0.3/normalize.min.css">
     <style type="text/css">
-        #img-wrapper {
+        #img-wrap {
             margin: 200px auto 0;
             text-align: center;
         }
 
-        #img-wrapper img {
+        #img-wrap img {
             width: 150px;
             height: 150px;
         }
@@ -59,12 +59,17 @@
 
         #lightbox img {
             position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: -300px;
+            margin-left: -300px;
+            width: 600px;
             border: 5px solid #fff;
         }
     </style>
 </head>
 <body>
-    <div id="img-wrapper">
+    <div id="img-wrap">
         <img src="lightbox1.jpg"/>
         <img src="lightbox2.jpg"/>
         <img src="lightbox3.jpg"/>
@@ -77,39 +82,84 @@
     <script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.2/jquery.min.js"></script>
     <script type="text/javascript">
         (function($) {
-            // 放大比例
-            var scale = 4;
-            var $bigImg = $('#lightbox img');
-            // 为图片注册点击事件
-            $('#img-wrapper').click(function(ev) {
-                var $smallImg = $(ev.target || event.srcElement);
-                if ($smallImg.is('img')) {
-                    $bigImg.attr('src', $smallImg.attr('src'));
-                    $('#lightbox img').css({'top': '50%', 'left': '50%', 'width': $smallImg.width * scale,
-                        'margin-top': '-300px', 'margin-left': '-300px'});
-                    $('#lightbox').fadeIn('fast');
-                    // 为灯箱注册点击事件
-                    $('#lightbox').click(function(ev) {
-                        var $target = $(ev.target || event.srcElement);
-                        // 显示前一张图
-                        if ($target.is('#prev')) {
-                            if (!$smallImg.is('#img-wrapper img:first-child')) {
-                                $smallImg = $smallImg.prev('#img-wrapper img');
-                                $bigImg.attr('src', $smallImg.attr('src'));
-                            }
-                            // 显示后一张图
-                        } else if ($target.is('#next')) {
-                            if (!$smallImg.is('#img-wrapper img:last-child')) {
-                                $smallImg = $smallImg.next('#img-wrapper img');
-                                $bigImg.attr('src', $smallImg.attr('src'));
-                            }
-                            // 灯箱消失
-                        } else {
-                            $(this).fadeOut('fast');
+            function Lightbox($tar, opts) {
+                this.$tar = $tar;
+                this.$bigImg = $tar.children('img');
+                this.wrapSel = opts.wrapSel;
+                this.prevSel = opts.prevSel;
+                this.nextSel = opts.nextSel;
+                this.$smallImg;
+                this.aniTime = opts.aniTime;
+                this.init();
+            }
+
+            Lightbox.prototype = {
+                init: function() {
+                    $(this.wrapSel).click(this._smallImgClick.bind(this));
+                    this.$tar.click(this._lightboxClick.bind(this));
+                },
+
+                _smallImgClick: function(ev) {
+                    this.$smallImg = $(ev.target || event.srcElement);
+                    if (this.$smallImg.is('img')) {
+                        this.$bigImg.attr('src', this.$smallImg.attr('src'));
+                        this.$tar.fadeIn(this.aniTime).trigger('fadeIn', this.$smallImg);
+                    }
+                },
+
+                _lightboxClick: function(ev) {
+                    var $target = $(ev.target || event.srcElement);
+                    // 显示前一张图
+                    if ($target.is(this.prevSel)) {
+                        if (!this.$smallImg.is(this.wrapSel + ' img:first-child')) {
+                            this.$smallImg = this.$smallImg.prev(this.wrapSel + ' img');
+                            this.$bigImg.attr('src', this.$smallImg.attr('src'));
                         }
-                    });
+                        // 显示后一张图
+                    } else if ($target.is(this.nextSel)) {
+                        if (!this.$smallImg.is(this.wrapSel + ' img:last-child')) {
+                            this.$smallImg = this.$smallImg.next(this.wrapSel + ' img');
+                            this.$bigImg.attr('src', this.$smallImg.attr('src'));
+                        }
+                        // 灯箱消失
+                    } else {
+                        this.$tar.fadeOut(this.aniTime).trigger('fadeOut', this.$smallImg);;
+                    }
+                },
+
+                destroy: function() {
+                    $(this.wrapSel).off('click');
+                    this.$tar.off('click');
                 }
-            })
+            };
+
+            $.fn.lightbox = function(options) {
+                // 参数为对象则新建组件
+                if ($.type(options) === 'object' || $.type(options) === 'undefined') {
+                    var defaults = {
+                        aniTime: 'fast',
+                        wrapSel: '#img-wrap',
+                        prevSel: '#prev',
+                        nextSel: '#next'
+                    };
+                    var lightbox = new Lightbox(this, $.extend({}, defaults, options));
+                    this.data('lightbox', lightbox);
+                // 参数为其他则调用方法
+                } else {
+                    var lightbox = this.data('lightbox');
+                    var returnVal;
+                    if (lightbox[options] && $.isFunction(lightbox[options])) {
+                        returnVal = lightbox[options].call(lightbox, Array.prototype.slice.call(arguments,1));
+                    }
+                    if (returnVal) return returnVal;
+                }
+                return this;
+            };
+
+            $('#lightbox').lightbox({aniTime: 300})
+                .on('fadeIn', function(ev, index) {console.log('fadeIn');})
+                .on('fadeOut', function(ev, index) {console.log('fadeOut');});
+            // $('#lightbox').lightbox('destroy');
         })(jQuery);
     </script>
 </body>
