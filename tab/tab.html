@@ -57,6 +57,7 @@ S<!DOCTYPE html>
                 this.tab = document.getElementById(opts.id || 'tab');
                 this.tabBtn = this.tab.getElementsByTagName(this.button);
                 this.tabCon = this.tab.getElementsByTagName(opts.conSel || 'div');
+                this.length = this.tabBtn.length;
                 // 切换选项卡时调用的函数
                 if (opts.afterShow instanceof Function) {
                     this.afterShow = opts.afterShow;
@@ -71,7 +72,7 @@ S<!DOCTYPE html>
                     this.tabBtn[0].className += this.activeClass;
                     this.tabCon[0].style.display = 'block';
                     // 为按钮添加索引
-                    for(var i = 0; i < this.tabBtn.length; i++) {
+                    for(var i = 0; i < this.length; i++) {
                        this.tabBtn[i].index = i;
                    }
                    this._bindEvent();
@@ -90,7 +91,7 @@ S<!DOCTYPE html>
                 // 切换选项卡
                 showTab: function(target) {
                     if (target.nodeName.toLowerCase() === this.button && target.className.indexOf(this.activeClass) === -1) {
-                        for ( i = 0; i < this.tabBtn.length; i++) {
+                        for ( i = 0; i < this.length; i++) {
                             if (this.tabBtn[i].className.indexOf(this.activeClass) !== -1) {
                                 this.tabBtn[i].className = this.tabBtn[i].className.replace(this.activeClass, '');
                                 this.tabCon[i].style.display = 'none';

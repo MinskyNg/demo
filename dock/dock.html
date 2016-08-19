@@ -59,9 +59,9 @@
                 _handleMousemove: function(ev) {
                     var oEvent = ev||event;
                     var i = 0;
-
+                    var length = this.dockImg.length;
                     // 对所有图标进行相应缩放
-                    for (i = 0; i < this.dockImg.length; i++) {
+                    for (i = 0; i < length; i++) {
                         // 得到图标中心点坐标
                         var cenLeft = this.dockImg[i].offsetLeft + this.dockBar.offsetLeft + this.dockImg[i].offsetWidth / 2;
                         var cenTop = this.dockImg[i].offsetTop + this.dockBar.offsetTop + this.dockImg[i].offsetHeight / 2;

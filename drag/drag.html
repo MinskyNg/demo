@@ -142,7 +142,7 @@
                     var minDis = 9999999;
                     var minDisIndex = -1;
 
-                    for (i = 0; i < this.dragItem.length; i++) {
+                    for (i = 0; i < this.dragLen; i++) {
                         if (item === this.dragItem[i]) continue;
                         // 碰撞检测
                         if (this.collideTest(item, this.dragItem[i])) {

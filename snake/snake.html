@@ -176,7 +176,8 @@
                     }
                     // 判断是否碰到自己
                     if (this.snakeBody.length > 4) {
-                        for (var i = 3; i < this.snakeBody.length - 1; i++) {
+                        var len = this.snakeBody.length - 1;
+                        for (var i = 3; i < len; i++) {
                             var x2 = parseInt(this.snakeBody[i].style.left);
                             var y2 = parseInt(this.snakeBody[i].style.top);
                             if (x1 === x2 && y1 === y2) {
