@@ -10,6 +10,7 @@
         * {
             box-sizing: border-box;
         }
+
         #main {
             position: relative;
             width: 300px;
@@ -18,12 +19,14 @@
             margin: 50px auto 0;
             overflow: hidden;
         }
+
         #content {
             position: absolute;
             width: 280px;
             padding: 7px;
             background: #EDEDED;
         }
+
         #aside {
             position: absolute;
             right: 0;
@@ -31,6 +34,7 @@
             height: 400px;
             background: #8C8C8C;
         }
+
         #bar {
             position: absolute;
             width: 20px;
@@ -43,8 +47,11 @@
     <div id="main">
         <div id="content">
             哥白尼不认同托勒密的体系，一个极其重要的原因是，他觉得托勒密提出的偏心等距点毫无美感…… ---托马斯·库恩，《哥白尼革命》
+            <br/>
             我们所有人都会受到凯利·约翰逊的影响，狂热地相信外观优美的飞机一定会飞得同样漂亮。  ---本·里奇，《臭鼬计划》
+            <br/>
             美感是第一道关卡。丑陋的数学在世界上无法生存。 ---G.H.哈代，《一个数学家的道歉》
+            <br/>
             众多学科对“美”的认识有着惊人的相似度。
             好设计是简单的设计。（当你被迫把东西做得很简单时，你就被迫直接面对真正的问题。当你不能用表面装饰交差时，你就不得不做好真正的本质部分。）
             好设计是永不过时的设计。(如果你希望自己的作品对未来的人们有吸引力，方法之一就是让你的作品对上几代人有吸引力。）
@@ -66,110 +73,17 @@
             <div id="bar"></div>
         </div>
     </div>
+    <script src="./scrollbar.js"></script>
     <script type="text/javascript">
-        (function() {
-            function ScrollBar(opts) {
-                this.main = document.getElementById(opts.mainId);
-                this.content = document.getElementById(opts.contentId);
-                this.aside = document.getElementById(opts.asideId);
-                this.bar = document.getElementById(opts.barId);
-                this.init();
-            }
+        var options = {
+            mainId: 'main',
+            contentId: 'content',
+            asideId: 'aside',
+            barId: 'bar'
+        };
 
-            ScrollBar.prototype = {
-                init: function() {
-                    // 根据显示区与总内容区高度比例 初始化滚动条高度
-                    this.bar.style.height = this.aside.offsetHeight * (this.main.offsetHeight / this.content.offsetHeight) + 'px';
-                    this.bar.onmousedown = this._handleMousedown.bind(this);
-                    // firefox浏览器事件名与其他浏览器不同
-                    if ((navigator.userAgent.toLowerCase().indexOf('firefox') !== -1)) {
-                        this.main.addEventListener('DOMMouseScroll', this._handleScroll.bind(this), false);
-                    } else if (this.main.addEventListener) {
-                        this.main.addEventListener('mousewheel', this._handleScroll.bind(this), false);
-                    } else if (this.main.attachEvent) {
-                        this.main.attachEvent('onmousewheel', this._handleScroll.bind(this));
-                    } else {
-                        this.main.onmousewheel = this._handleScroll.bind(this);
-                    }
-                },
-
-                // 设置滚动条位置和内容区位置
-                setPos: function(relativeY) {
-                    // 防止滚动条向上超过侧边区
-                    if (relativeY < 0) {
-                        relativeY = 0;
-                    // 防止滚动条向下超过侧边区
-                    } else if (relativeY > this.aside.offsetHeight - this.bar.offsetHeight) {
-                        relativeY = this.aside.offsetHeight - this.bar.offsetHeight;
-                    }
-                    // 设置滚动条位置
-                    this.bar.style.top = relativeY + 'px';
-                    // 设置内容区位置
-                    var scale = relativeY / (this.aside.offsetHeight - this.bar.offsetHeight);
-                    this.content.style.top = -scale * (this.content.offsetHeight - this.main.offsetHeight) + 'px';
-                },
-
-                // 为滚动条注册鼠标按下事件
-                _handleMousedown: function(ev) {
-                    var self = this;
-                    var oEvent = ev || event;
-                    var disY = oEvent.clientY - this.bar.offsetTop;
-                    // 为滚动条注册鼠标移动事件
-                    document.onmousemove = function(ev) {
-                        var oEvent = ev || event;
-                        // 计算鼠标移动时，滚动条顶部相对侧边区顶部的距离
-                        var relativeY = oEvent.clientY - disY;
-                        // 设置滚动条位置和内容区位置
-                        self.setPos(relativeY);
-                    }
-                    // 为滚动条注册鼠标松开事件
-                    document.onmouseup = function() {
-                        // 解除事件绑定
-                        document.onmousemove = null;
-                        document.onmouseup = null;
-                    }
-                    // 终止事件
-                    return false;
-                },
-
-                _handleScroll: function(ev) {
-                    var oEvent = ev || event;
-                    // firefox中方向判断与其他浏览器相反
-                    var delta = oEvent.detail || (-oEvent.wheelDelta);
-                    var relativeY = this.bar.offsetTop;
-                    if (delta > 0) {
-                        relativeY += 10;
-                    } else {
-                        relativeY -= 10;
-                    }
-                    this.setPos(relativeY);
-                    return false;
-                },
-
-                destroy: function() {
-                    this.aside.parentNode.removeChild(this.aside);
-                    if ((navigator.userAgent.toLowerCase().indexOf('firefox') !== -1)) {
-                        this.main.removeEventListener('DOMMouseScroll', this._handleScroll.bind(this), false);
-                    } else if (this.main.removeEventListener) {
-                        this.main.removeEventListener('mousewheel', this._handleScroll.bind(this), false);
-                    } else if (this.main.detachEvent) {
-                        this.main.detachEvent('onmousewheel', this._handleScroll.bind(this));
-                    } else {
-                        this.main.onmousewheel = null;
-                    }
-                }
-            };
-
-            var options = {
-                mainId: 'main',
-                contentId: 'content',
-                asideId: 'aside',
-                barId: 'bar'
-            };
-
-            var scrollBar = new ScrollBar(options);
-            // scrollBar.destroy();
-        })();
+        var scrollBar = new ScrollBar(options);
+        // scrollBar.destroy();
     </script>
 </body>
 </html>

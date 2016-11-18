@@ -1,0 +1,302 @@
+*{
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft Yahei', Helvetica, Arial, sans-serif;
+    background-color: #F1F2F3;
+}
+
+a {
+    text-decoration: none;
+    color: #555;
+    cursor: pointer;
+}
+
+.container {
+    width: 1020px;
+    margin: 100px auto 0;
+    overflow: hidden;
+}
+
+
+/* 歌曲列表部分 */
+.music-list {
+    float: left;
+    width: 680px;
+    height: 470px;
+    margin-right: 20px;
+    border-radius: 3px;
+    color: #555;
+    background-color: #FFF;
+}
+
+.music-list h2 {
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    font-size: 24px;
+}
+
+.music-list ul {
+    padding: 20px;
+}
+
+.music-list li {
+    display: block;
+    line-height: 36px;
+    border-bottom: 1px dotted #CCC;
+}
+
+/* 歌曲搜索部分 */
+.music-search {
+    position: relative;
+    width: 800px;
+    height: 35px;
+    margin: 0 auto;
+    color: #555;
+}
+
+#music-keyword {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    width: 254px;
+    height: 35px;
+    padding: 0 10px;
+    border: 1px solid #555;
+    border-radius: 20px;
+    font-size: 14px;
+    line-height: 35px;
+    background-color: transparent;
+    outline: none;
+}
+
+#search-button {
+    position: absolute;
+    top: 0;
+    left: 186px;
+    display: inline-block;
+    height: 35px;
+    padding: 0 10px;
+    border: 1px solid #555;
+    border-radius: 0 20px 20px 0;
+    font-size: 14px;
+    line-height: 35px;
+    transition: all 0.3s linear;
+}
+
+#search-button:hover {
+    color: #000;
+}
+
+#music-result {
+    position: absolute;
+    top: 0;
+    left: 320px;
+    display: inline-block;
+    height: 35px;
+    padding: 0 20px;
+    border: 1px dashed #555;
+    border-radius: 20px;
+    font-size: 14px;
+    line-height: 35px;
+    opacity: 0;
+    transition: all 0.7s linear;
+}
+
+#music-result strong {
+    margin-right: 20px;
+    font-weight: normal;
+}
+
+#music-play {
+    color: #555;
+}
+
+
+/* 封面及控制部分 */
+.music-main {
+    float: left;
+    width: 320px;
+    height: 470px;
+    border-radius: 3px;
+    color: #000;
+    background-color: #FFF;
+}
+
+.music-header {
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    border-bottom: 1px solid #555;
+}
+
+.music-header h1 {
+    font-size: 24px;
+    color: #555;
+}
+
+.music-cover {
+    position: relative;
+    height: 240px;
+}
+
+#music-img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -65px;
+    margin-top: -65px;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+}
+
+#music-title {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+
+.bars {
+    height: 25px;
+    padding-top: 5px;
+}
+
+#music-bar {
+    position: relative;
+    display: inline-block;
+    width: 218px;
+    height: 4px;
+    margin-left: 5px;
+    margin-right: 7px;
+    border-radius: 4px;
+    background-color: #DEDEDE;
+}
+
+#voice-bar {
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 4px;
+    border-radius: 4px;
+    background-color: #DEDEDE;
+}
+
+#played-bar, #voiced-bar {
+    position: absolute;
+    float: left;
+    display: inline-block;
+    height: 4px;
+    border-radius: 4px;
+    background-color: #555;
+    z-index: 2;
+    transition: all 0.5s linear;
+}
+
+#played-bar:after, #voiced-bar:after {
+    position: absolute;
+    right: -2px;
+    top: -2px;
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #FFF;
+    cursor: pointer;
+}
+
+#load-bar {
+    position: absolute;
+    float: left;
+    display: inline-block;
+    height: 4px;
+    border-radius: 4px;
+    background-color: #A2A2A2;
+    z-index: 1;
+    transition: all 3s;
+}
+
+.music-time {
+    width: 216px;
+    padding: 3px 0 0 6px;
+    font-size: 12px;
+    overflow: hidden;
+}
+
+.music-time span:nth-child(1) {
+    float: left;
+}
+
+.music-time span:nth-child(2) {
+    float: right;
+}
+
+.controls {
+    padding-top: 20px;
+    text-align: center;
+}
+
+.controls a {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    margin-right: 5px;
+    border-radius: 50%;
+    color: #FFF;
+    background-color: #555;
+}
+
+#play {
+    font-size: 14px;
+    transition: all 0.3s linear;
+}
+
+#play:hover {
+    transform: scale(1.05);
+}
+
+#prev, #next {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #555;
+    line-height: 26px;
+    color: #555;
+    background-color: transparent;
+    transition: all 0.3s linear;
+}
+
+#prev:hover, #next:hover {
+    color: #000;
+    border-color: #EDEDED;
+}
+
+#loop, #mute {
+    width: 30px;
+    height: 16px;
+    margin: 0 20px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 16px;
+    color: #555;
+    background-color: transparent;
+}
+
+#loop:hover, #mute:hover {
+    color: #000;
+}
+
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}

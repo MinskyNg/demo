@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>音乐播放器</title>
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="./player.css">
+</head>
+<body>
+    <div class="container">
+        <div class="music-list">
+            <h2>歌曲列表</h2>
+            <div class="music-search">
+                <input id="music-keyword" type="text">
+                <a id="search-button" href="javascript:;">搜索音乐</a>
+                <span id="music-result"></span>
+            </div>
+            <ul>
+                <li>流沙 - 陶喆</li>
+                <li>爱在西元前 - 周杰伦</li>
+                <li>Sunday Morning - The Velvet Underground</li>
+                <li>Lost For Words - Pink Floyd</li>
+                <li>Thinking About You - Radiohead</li>
+                <li>I Don't Want To Change You - Damien Rice</li>
+            </ul>
+        </div>
+        <audio id="audio">
+            <source title="流沙 - 陶喆" data-img="http://p3.music.126.net/C2xw3jriQMoKnvyOsHYPDA==/6649846324860603.jpg?param=130y130" src="http://link.hhtjim.com/163/150667.mp3">
+            <source title="爱在西元前 - 周杰伦" data-img="http://p4.music.126.net/xLtaiBWhuJ0KJe1_DhC_fg==/59373627912203.jpg?param=130y130" src="http://link.hhtjim.com/163/186114.mp3">
+            <source title="Sunday Morning - The Velvet Underground" data-img="http://p4.music.126.net/5CuLry1JQsbXoBvBgL9BmQ==/2535473814614187.jpg?param=130y130" src="http://link.hhtjim.com/163/19537516.mp3">
+            <source title="Lost For Words - Pink Floyd" data-img="http://p3.music.126.net/bDHCiHY9YoaITtTEaCkb9Q==/2536573326453297.jpg?param=130y130" src="http://link.hhtjim.com/163/4237164.mp3">
+            <source title="Thinking About You - Radiohead" data-img="http://p3.music.126.net/B-g0reAeYZwnwNmxcDbn1w==/874111744105004.jpg?param=130y130" src="http://link.hhtjim.com/163/22605225.mp3">
+            <source title="I Don't Want To Change You - Damien Rice" data-img="http://p4.music.126.net/2_x_1PnKTOjuZBSg8T-ZHw==/6633353651022635.jpg?param=130y130" src="http://link.hhtjim.com/163/29427498.mp3">
+        </audio>
+        <div class="music-main">
+            <div class="music-header">
+                <h1>音乐播放器</h1>
+            </div>
+            <div class="music-cover">
+                <img id="music-img" src="http://p3.music.126.net/C2xw3jriQMoKnvyOsHYPDA==/6649846324860603.jpg?param=130y130" alt="">
+            </div>
+            <div id="music-title">流沙 - 陶喆</div>
+            <div class="bars">
+                <span id="music-bar">
+                    <span id="load-bar"></span>
+                    <span id="played-bar"></span>
+                </span>
+                <span id="voice-bar">
+                    <span id="voiced-bar"></span>
+                </span>
+                <div class="music-time">
+                    <span id="current-time">0:00</span>
+                    <span id="total-time"></span>
+                </div>
+            </div>
+            <div class="controls">
+                <a id="loop" href="javascript:;">循环</a>
+                <a id="prev" href="javascript:;"><</a>
+                <a id="play" href="javascript:;">Play</a>
+                <a id="next" href="javascript:;">></a>
+                <a id="mute" href="javascript:;">静音</a>
+            </div>
+        </div>
+    </div>
+    <script src="./player.js"></script>
+    <script type="text/javascript">
+        var result = document.getElementById('music-result'); // 结果区
+        // jsonp回调函数
+        function jsonpcallback(rs) {
+            var resultHtml = '歌曲：<strong>' + rs.result.songs[0].name + '</strong>' +
+                             '歌手：<strong>' + rs.result.songs[0].artists[0].name + '</strong>' +
+                             '<a href="javascript:;" id="music-play">立即播放</a>';
+            result.innerHTML = resultHtml;
+            result.setAttribute('data-audio', rs.result.songs[0].audio);
+            result.setAttribute('data-img', rs.result.songs[0].album.picUrl);
+            result.setAttribute('data-music', rs.result.songs[0].name);
+            result.setAttribute('data-singer', rs.result.songs[0].artists[0].name);
+            result.style.opacity = '1';
+        };
+    </script>
+</body>
+</html>

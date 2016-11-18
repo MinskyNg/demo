@@ -93,55 +93,12 @@
             </ul>
         </li>
     </ul>
-    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.1.2/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/jquery/2.1.2/jquery.min.js"></script>
+    <script src="./collapse.js"></script>
     <script>
-        (function($) {
-            function Collapse($tar, opts) {
-                this.$tar = $tar;
-                this.btnSel = opts.btnSel;
-                this.conSel = opts.conSel;
-                this.aniTime = opts.aniTime;
-                this.init();
-            }
-
-            Collapse.prototype = {
-                // 初始化
-                init: function() {
-                    this.$tar.on('click', this.btnSel, this._handleClick.bind(this));
-                },
-
-                _handleClick: function(event) {
-                    var $target = $(event.target);
-                    var show = false;
-                    // 如果相邻列表不可见
-                    if ($target.next().is(':visible') === false) {
-                        show = true;
-                        this.$tar.find(this.conSel).slideUp(this.aniTime);
-                    }
-                    $target.next().slideToggle(this.aniTime);
-                    // 事件广播
-                    if (show) {
-                        this.$tar.trigger('collapse.show', event.tatget);
-                    } else {
-                        this.$tar.trigger('collapse.close', event.tatget);
-                    }
-                }
-            };
-
-            $.fn.collapse = function(options) {
-                var defaults = {
-                    btnSel: '.collapse-title',
-                    conSel: 'ul',
-                    aniTime: 300,
-                };
-                new Collapse(this, $.extend({}, defaults, options));
-                return this;
-            };
-
-            $('#collapse-menu').collapse()
-                .on('collapse.show', function() {console.log('show');})
-                .on('collapse.close', function() {console.log('close');});
-        })(jQuery);
+        jQuery('#collapse-menu').collapse()
+            .on('collapse.show', function() {console.log('show');})
+            .on('collapse.close', function() {console.log('close');});
     </script>
 </body>
 </html>
