@@ -37,7 +37,7 @@
         handleClick: function(ev) {
             var oEvent = ev || event;
             var target = oEvent.target;
-            switch(target.className) {
+            switch(target.className.toLowerCase()) {
                 case 'button-num':
                     this.addNum(target.innerHTML);
                     break;

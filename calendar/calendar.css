@@ -1,0 +1,229 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft Yahei', Helvetica, Arial, sans-serif;
+    background-color: #F8F8F8;
+}
+
+#main {
+    width: 800px;
+    margin: 80px auto 0;
+}
+
+.input-box {
+    position: relative;
+    width: 210px;
+    padding: 2px;
+    margin: 0 auto;
+}
+
+.datePicker {
+    width: 170px;
+    height: 30px;
+    padding-left: 35px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+}
+
+.input-box i {
+    position: absolute;
+    left: 8px;
+    top: 7px;
+    font-size: 20px;
+    z-index: 10;
+}
+
+.calendar {
+    position: relative;
+    width: 640px;
+    height: 400px;
+    margin: 30px auto 0;
+    border-radius: 8px;
+}
+
+.left {
+    float: left;
+    width: 35%;
+    height: 100%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color: #F38586;
+    overflow: hidden;
+}
+
+.right {
+    display: inline-block;
+    width: 65%;
+    height: 100%;
+    padding: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: #FFF;
+    overflow: hidden;
+}
+
+.left>a {
+    display: block;
+    color: #FFF;
+    letter-spacing: 2px;
+    transition: all .3s linear;
+}
+
+.show-year {
+    margin-top: 90px;
+    margin-left: 60px;
+    font-size: 30px;
+}
+
+.show-week {
+    margin-top: 15px;
+    margin-left: 55px;
+    font-size: 30px;
+}
+
+.show-day {
+    margin-top: 10px;
+    margin-left: 38px;
+    font-size: 35px;
+}
+
+.controle {
+    width: 90%;
+    height: 30px;
+    padding-top: 10px;
+    margin: auto;
+}
+
+.controle>i {
+    color: #737373;
+    cursor: pointer;
+    transition: all .3s linear;
+}
+
+.controle>i:last-child {
+    float: right;
+}
+
+.controle>i:hover {
+    color: #F38586;
+    transform: scale(1.2);
+}
+
+.controle-show {
+    display: inline-block;
+    margin-left: 35%;
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+}
+
+table {
+    margin: 10px auto 0;
+    width: 100%;
+}
+
+.animate {
+    animation: show 0.3s ease-out;
+}
+
+.left-animate {
+    animation: show-left 0.3s ease-out;
+}
+
+.right-animate {
+    animation: show-right 0.3s ease-out;
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes show-left {
+    from {
+        margin-left: -300px;
+    }
+
+    to {
+        margin-left: 0px;
+    }
+}
+
+@keyframes show-right {
+    from {
+        margin-left: 300px;
+    }
+
+    to {
+        margin-left: 0px;
+    }
+}
+
+
+th, td {
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+thead {
+    color: #333;
+}
+
+
+table a {
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    line-height: 40px;
+    cursor: pointer;
+    transition: all .3s linear;
+}
+
+table a.choose {
+    color: #FFF;
+    background-color: #F38586;
+}
+
+table a:hover {
+    color: #FFF;
+    background-color: #F38586;
+}
+
+.button-box {
+    position: absolute;
+    top: 360px;
+    left: 460px;
+}
+
+.button-box a {
+    float: right;
+    padding: 4px;
+    margin-left: 30px;
+    border-radius: 3px;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    color: #F38586;
+    cursor: pointer;
+    transition: all .3s linear;
+}
+
+.button-box a:hover {
+    color: #FFF;
+    background-color: #F38586;
+    transform: scale(1.08);
+}

@@ -38,7 +38,7 @@
 
         // 切换选项卡
         showTab: function(target) {
-            if (target.nodeName.toLowerCase() === this.button && target.className.indexOf(this.activeClass) === -1) {
+            if (target.nodeName.toLowerCase() === this.button && target.className.toLowerCase().indexOf(this.activeClass) === -1) {
                 for ( i = 0; i < this.length; i++) {
                     if (this.tabBtn[i].className.indexOf(this.activeClass) !== -1) {
                         this.tabBtn[i].className = this.tabBtn[i].className.replace(this.activeClass, '');
