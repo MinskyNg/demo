@@ -1,7 +1,6 @@
 (function(window, document){
     function Calendar(target) {
         this.target = target;
-        this.weeks = {'0': '日', '1': '一', '2': '二', '3': '三', '4': '四', '5': '五', '6': '六'};
         this.date = {};
         var now = new Date();
         this.date.year = now.getFullYear();
@@ -15,6 +14,8 @@
     }
 
     Calendar.prototype = {
+        // 周期
+        weeks: {'0': '日', '1': '一', '2': '二', '3': '三', '4': '四', '5': '五', '6': '六'},
         // 创建选择器input
         createInput: function() {
             var inputbox = document.createElement('div');

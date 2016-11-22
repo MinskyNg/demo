@@ -1,5 +1,5 @@
 (function(window, document){
-    function Calculator() {
+    function Calculator(opts) {
         // 存储数值
         this.num = 0;
         // 运算结果
@@ -13,9 +13,9 @@
         // 防止重复输入标志
         this.quit = 0;
         // 显示屏DOM元素
-        this.screen = document.getElementById('screen');
+        this.screen = document.getElementById(opts.screenId);
         // 按键DOM元素
-        this.buttons = document.getElementById('buttons');
+        this.buttons = document.getElementById(opts.buttonsId);
         // 操作符映射
         this.operateMap = {
             '←': this.backspace.bind(this),

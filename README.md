@@ -1,3 +1,3 @@
 # 前端demo
 
-[demo](http://minsky.me/demo)
+[在线地址 demo](http://minsky.me/demo)

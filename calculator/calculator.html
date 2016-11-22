@@ -119,7 +119,12 @@
     </div>
     <script src="./calculator.js"></script>
     <script type="text/javascript">
-        var calculator = new Calculator();
+        var options = {
+            screenId: 'screen',
+            buttonsId: 'buttons'
+        };
+
+        var calculator = new Calculator(options);
     </script>
 </body>
 </html>
