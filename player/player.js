@@ -210,11 +210,11 @@ window.onload = function() {
         },
 
         createJsonp: function(src) {
-            var el = document.createElement('script');
-            el.src = src;
-            el.async = true;
-            el.defer = true;
-            document.body.appendChild(el);
+            var script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+            script.defer = true;
+            document.body.appendChild(script);
         },
 
         handleResult: function(ev) {

@@ -49,7 +49,7 @@
         },
 
         checkShow: function(){
-            if ($('.load').offset().top < $(window).scrollTop() + $(window).height()) {
+            if ($('.load').offset().top < $(window).scrollTop() + $(window).height() + 400) {
                 $.ajax({
                     url: 'http://platform.sina.com.cn/slide/album_tech',
                     dataType: 'jsonp',
