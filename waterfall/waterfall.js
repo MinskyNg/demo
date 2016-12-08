@@ -1,8 +1,8 @@
 (function($) {
-    function Waterfall() {
+    function Waterfall(opts) {
         this.timer;
-        this.curPage = 1;
-        this.pageCount = 10;
+        this.page = opts.page || 1;
+        this.num = opts.num || 10;
 
         this.checkShow();
         this.render();
@@ -55,14 +55,14 @@
                     dataType: 'jsonp',
                     jsonp: 'jsoncallback',
                     data: {
-                        app_key:'1271687855',
-                        num:this.pageCount,
-                        page:this.curPage
+                        app_key: '1271687855',
+                        num: this.num,
+                        page: this.page
                     }
                 }).done(function(result) {
                     if (result && result.status && result.status.code === '0') {
                         this.renderData(result.data);
-                        this.curPage++;
+                        this.page++;
                     } else {
                         console.log('Load Error!');
                     }
