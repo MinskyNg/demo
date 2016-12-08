@@ -15,7 +15,7 @@
 |[图片画廊](http://minsky.me/demo/lightbox)|[lightbox](https://github.com/MinskyNg/demo/tree/master/lightbox)|
 |[放大镜](http://minsky.me/demo/magnifier)|[magnifier](https://github.com/MinskyNg/demo/tree/master/magnifier)|
 |[CSS三级菜单](http://minsky.me/demo/menu)|[menu](https://github.com/MinskyNg/demo/tree/master/menu)|
-|[音乐播放器](http://minsky.me/demo/playerscrollbar)|[playerscrollbar](https://github.com/MinskyNg/demo/tree/master/playerscrollbar)|
+|[音乐播放器](http://minsky.me/demo/player)|[player](https://github.com/MinskyNg/demo/tree/master/player)|
 |[自定义滚动条](http://minsky.me/demo/scrollbar)|[scrollbar](https://github.com/MinskyNg/demo/tree/master/scrollbar)|
 |[图片轮播](http://minsky.me/demo/slide)|[slide](https://github.com/MinskyNg/demo/tree/master/slide)|
 |[贪吃蛇](http://minsky.me/demo/snake)|[snake](https://github.com/MinskyNg/demo/tree/master/snake)|
